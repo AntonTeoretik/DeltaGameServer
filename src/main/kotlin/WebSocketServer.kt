@@ -15,18 +15,22 @@ class WebSocketServer() {
 
         routing {
             webSocket("/game") {
-                val id = call.parameters["id"] ?: error("Missing id parameter")
-                connections[id] = this
                 try {
-                    send("Connected to server!")
-                    for (frame in incoming) {
-                        if (frame is Frame.Text) {
-                            val text = frame.readText()
-                            println("Received message from $id: $text")
+                    val id = call.parameters["id"] ?: error("Missing id parameter")
+                    connections[id] = this
+                    try {
+                        send("Connected to server!")
+                        for (frame in incoming) {
+                            if (frame is Frame.Text) {
+                                val text = frame.readText()
+                                println("Received message from $id: $text")
+                            }
                         }
+                    } finally {
+                        connections.remove(id)
                     }
-                } finally {
-                    connections.remove(id)
+                } catch (e : Exception) {
+                    send(e.message.toString())
                 }
             }
         }

@@ -14,18 +14,17 @@ repositories {
 dependencies {
     implementation("com.delta:game-logic:1.0.0")
 
-    val ktor_version = "2.2.4"
-    implementation("io.ktor:ktor-server-core:$ktor_version")
-    implementation("io.ktor:ktor-server-netty:$ktor_version")
-//    implementation("io.ktor:ktor-websockets:$ktor_version")
-    implementation("io.ktor:ktor-server-websockets:$ktor_version")
+    val ktorVersion = "2.2.4"
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-websockets:$ktorVersion")
 
-    implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
-    implementation("io.ktor:ktor-serialization-gson:$ktor_version")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-gson:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:1.4.5")
 
-    testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
 
     testImplementation(kotlin("test"))
 }

@@ -167,7 +167,6 @@ class HttpServer(
             throw Exception("Wrong server password")
     }
 
-
     fun start(wait: Boolean) {
         httpServer.start(wait)
     }
