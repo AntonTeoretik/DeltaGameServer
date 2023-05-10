@@ -6,7 +6,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class Server {
-    val gameLogic : GameLogic = GameLogic(GameBoard(10))
+    val gameLogic : GameLogic = GameLogic(GameBoard(15))
 
     private val webSocketServer = WebSocketServer()
 

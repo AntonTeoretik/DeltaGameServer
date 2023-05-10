@@ -26,7 +26,7 @@ class HttpServer(
 
     private val gson = Gson()
 
-    private suspend fun registerPlayer(id: String): Player {
+    private fun registerPlayer(id: String): Player {
         if (gameStarted) throw Exception("Game already started, you can't join it")
 
         if (players.any { it.id == id }) throw Exception("The player with a given id is already in the game")
@@ -41,13 +41,12 @@ class HttpServer(
 
     }
 
-    private suspend fun addPlayer(player: Player): Boolean {
+    private fun addPlayer(player: Player): Boolean {
         var success = false
         if (players.size < PlayerID.values().size) {
             players.add(player)
             success = true
         }
-        tryToStartGame()
         return success
     }
 
@@ -86,6 +85,7 @@ class HttpServer(
                 } catch (e: Exception) {
                     respondException(call, e)
                 }
+                tryToStartGame()
             }
 
             post("/placeCell") {
