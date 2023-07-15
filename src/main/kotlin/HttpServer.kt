@@ -38,7 +38,14 @@ class HttpServer(
 
         if (addPlayer(player)) return player
         throw Exception("The game is already started")
+    }
 
+    private fun logoutPlayer(id: String): Boolean {
+        println("Try logout player: $id")
+        val player = players.find { it.id == id } ?: return false
+        players.remove(player)
+        println("Ok: $id")
+        return true
     }
 
     private fun addPlayer(player: Player): Boolean {
@@ -85,7 +92,21 @@ class HttpServer(
                 } catch (e: Exception) {
                     respondException(call, e)
                 }
+                Thread.sleep(1000)
                 tryToStartGame()
+            }
+
+            post("/logout") {
+                println("\nlogout")
+                try {
+                    validatePlayer(call.parameters, false)
+                    val id = call.parameters["id"]!!
+                    logoutPlayer(id)
+                    call.respondText("Ok", status = HttpStatusCode.OK)
+                } catch (e: Exception) {
+                    println(e.message)
+                    respondException(call, e)
+                }
             }
 
             post("/placeCell") {
@@ -155,8 +176,8 @@ class HttpServer(
         call.respondText("Error: ${e.message}", status = HttpStatusCode.InternalServerError)
     }
 
-    private fun validatePlayer(parameters: Parameters): Player {
-        if (!gameStarted) throw Exception("Game is not started yet")
+    private fun validatePlayer(parameters: Parameters, checkForGameStart:Boolean = true): Player {
+        if (checkForGameStart && !gameStarted) throw Exception("Game is not started yet")
         val potentialPlayer = Player(parameters["id"]!!, parameters["pwd"]!!)
         if (potentialPlayer in players) return potentialPlayer
         throw Exception("No such player or credentials are wrong")
